@@ -4,6 +4,7 @@
 - MacOS 기준
 - python 3.5 이상
 - pyenv 설치 권장
+
 ```
 # 프로젝트 클론
 cd ~/projects
