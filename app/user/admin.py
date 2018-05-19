@@ -26,7 +26,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = YouAreUser
-        fields = ('user_key',)
+        fields = ('phone',)
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
@@ -80,8 +80,8 @@ class UserChangeForm(forms.ModelForm):
 @admin.register(YouAreUser)
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
-        (None, {'fields': ('user_key', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'email', 'phone')}),
+        (None, {'fields': ('phone', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'email', )}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
@@ -89,14 +89,14 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('user_key', 'password1', 'password2')}
+            'fields': ('phone', 'password1', 'password2')}
          ),
     )
 
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ('id', 'user_key', 'is_staff', 'last_login', 'date_joined')
-    search_fields = ('user_key', 'first_name', 'last_name')
+    list_display = ('id', 'phone', 'is_staff', 'last_login', 'date_joined')
+    search_fields = ('phone', 'first_name', 'last_name')
     ordering = ['-id', ]
     date_hierarchy = 'date_joined'
 

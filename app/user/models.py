@@ -9,24 +9,30 @@ from service.models import TimeStampedModel
 
 CHOICES = {
     '성별': [('M', 'Male'), ('F', 'Female')],
+    '가입단계': [
+        ('이름', 'name'),
+        ('성별', 'gender'),
+        ('나이', 'age'),
+        ('완료', 'complete'),
+    ]
 }
 
 
 class YouAreUserManager(BaseUserManager):
-    def _create_user(self, user_key, password, **extra_fields):
-        if not user_key:
-            raise ValueError('Users must have an user_key address')
-        user = self.model(user_key=user_key, **extra_fields)
+    def _create_user(self, phone, password, **extra_fields):
+        if not phone:
+            raise ValueError('Users must have an phone address')
+        user = self.model(phone=phone, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, user_key, password=None, **extra_fields):
+    def create_user(self, phone, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(user_key, password, **extra_fields)
+        return self._create_user(phone, password, **extra_fields)
 
-    def create_superuser(self, user_key, password, **extra_fields):
+    def create_superuser(self, phone, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -34,15 +40,16 @@ class YouAreUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
-        return self._create_user(user_key, password, **extra_fields)
+        return self._create_user(phone, password, **extra_fields)
 
 
 class YouAreUser(AbstractBaseUser, PermissionsMixin):
-    user_key = models.CharField(verbose_name="User Key", max_length=200, unique=True)  # TODO PHONE
+    phone = models.CharField(verbose_name="전화번호", max_length=30, unique=True)  # TODO PHONE
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
-    phone = models.CharField(verbose_name='전화번호', max_length=30)
+    current_join_step = models.CharField(verbose_name='가입단계', max_length=30, blank=True, default='gender')
+
     email = models.EmailField(verbose_name='이메일', max_length=255, blank=True, null=True)
     birthday = models.DateField(verbose_name='생년월일', blank=True, null=True)
     gender = models.CharField(verbose_name='성별', max_length=1, choices=CHOICES['성별'], default='M')
@@ -64,7 +71,7 @@ class YouAreUser(AbstractBaseUser, PermissionsMixin):
 
     objects = YouAreUserManager()
 
-    USERNAME_FIELD = 'user_key'
+    USERNAME_FIELD = 'phone'
 
     class Meta:
         verbose_name = _('user')
@@ -78,7 +85,7 @@ class YouAreUser(AbstractBaseUser, PermissionsMixin):
         return self.first_name
 
     def __str__(self):
-        return self.user_key
+        return self.phone
 
 
 class Device(TimeStampedModel):
@@ -101,7 +108,6 @@ class Friends(TimeStampedModel):
     name = models.CharField(verbose_name='이름', max_length=30, blank=True, null=True)
     phone = models.CharField(verbose_name='전화번호', max_length=30, blank=True, null=True)
 
-    user_key = models.CharField(verbose_name="User Key", max_length=200, blank=True, null=True)
     email = models.EmailField(verbose_name='이메일', max_length=255, blank=True, null=True)
     birthday = models.DateField(verbose_name='생년월일', blank=True, null=True)
     gender = models.CharField(verbose_name='성별', max_length=1, choices=CHOICES['성별'], default='M', blank=True,

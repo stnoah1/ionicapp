@@ -10,9 +10,9 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            user_key = form.cleaned_data.get("user_key")
+            phone = form.cleaned_data.get("phone")
             password = form.cleaned_data.get("password")
-            user = authenticate(user_key=user_key, password=password)
+            user = authenticate(phone=phone, password=password)
             login(request, user)
             messages.success(request, '로그인 하였습니다.')
             return redirect('home')
