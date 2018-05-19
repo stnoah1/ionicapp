@@ -38,12 +38,12 @@ class YouAreUserManager(BaseUserManager):
 
 
 class YouAreUser(AbstractBaseUser, PermissionsMixin):
-    user_key = models.CharField(verbose_name="User Key", max_length=200, unique=True)
+    user_key = models.CharField(verbose_name="User Key", max_length=200, unique=True)  # TODO PHONE
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
-    phone = models.CharField(verbose_name='전화번호', max_length=30, blank=True, null=True)
-    email = models.EmailField(verbose_name='이메일', max_length=255, unique=True)
+    phone = models.CharField(verbose_name='전화번호', max_length=30)
+    email = models.EmailField(verbose_name='이메일', max_length=255, blank=True, null=True)
     birthday = models.DateField(verbose_name='생년월일', blank=True, null=True)
     gender = models.CharField(verbose_name='성별', max_length=1, choices=CHOICES['성별'], default='M')
 
@@ -81,14 +81,28 @@ class YouAreUser(AbstractBaseUser, PermissionsMixin):
         return self.user_key
 
 
+class Device(TimeStampedModel):
+    class Meta:
+        verbose_name = "기기 정보"
+        verbose_name_plural = verbose_name
+        ordering = ['-id']
+
+    user = models.ForeignKey('user.YouAreUser', verbose_name='사용자')
+    unique_key = models.CharField(verbose_name="Device 고유키", max_length=200, unique=True)
+    is_active = models.BooleanField(verbose_name="유효", default=True)
+
+
 class Friends(TimeStampedModel):
     class Meta:
         verbose_name = '친구'
         verbose_name_plural = verbose_name
 
     user = models.ForeignKey(YouAreUser, verbose_name='사용자')
-    user_key = models.CharField(verbose_name="User Key", max_length=200, unique=True)
+    name = models.CharField(verbose_name='이름', max_length=30, blank=True, null=True)
     phone = models.CharField(verbose_name='전화번호', max_length=30, blank=True, null=True)
-    email = models.EmailField(verbose_name='이메일', max_length=255, unique=True)
+
+    user_key = models.CharField(verbose_name="User Key", max_length=200, blank=True, null=True)
+    email = models.EmailField(verbose_name='이메일', max_length=255, blank=True, null=True)
     birthday = models.DateField(verbose_name='생년월일', blank=True, null=True)
-    gender = models.CharField(verbose_name='성별', max_length=1, choices=CHOICES['성별'], default='M')
+    gender = models.CharField(verbose_name='성별', max_length=1, choices=CHOICES['성별'], default='M', blank=True,
+                              null=True)

@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import ugettext_lazy as _
 
-from user.models import YouAreUser
+from user.models import YouAreUser, Friends, Device
 
 
 class UserCreationForm(forms.ModelForm):
@@ -81,7 +81,7 @@ class UserChangeForm(forms.ModelForm):
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('user_key', 'password')}),
-        (_('Personal info'), {'fields': ('last_name', 'first_name', 'email')}),
+        (_('Personal info'), {'fields': ('first_name', 'email', 'phone')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
@@ -99,3 +99,13 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('user_key', 'first_name', 'last_name')
     ordering = ['-id', ]
     date_hierarchy = 'date_joined'
+
+
+@admin.register(Friends)
+class FriendsAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Device)
+class DeviceAdmin(admin.ModelAdmin):
+    pass

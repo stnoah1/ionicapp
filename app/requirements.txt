@@ -2,3 +2,5 @@ Django<2.0
 psycopg2
 psycopg2-binary
 django-fernet-fields
+djangorestframework
+django-filter>=1.0.2
