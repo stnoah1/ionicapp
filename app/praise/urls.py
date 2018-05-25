@@ -5,3 +5,4 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^$', login_required(TemplateView.as_view(template_name='praise/give_praise.html')), name='main'),
 ]
+
