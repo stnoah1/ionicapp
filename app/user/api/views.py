@@ -28,7 +28,7 @@ def user_create_view(request):
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
-def user_detail_view(request, token):
-    user = Token.objects.filter(key=token).first().user
+def user_detail_view(request):
+    user = request.user
     serializer = UserSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)
