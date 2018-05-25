@@ -4,3 +4,4 @@ psycopg2-binary
 django-fernet-fields
 djangorestframework
 django-filter>=1.0.2
+django-cors-headers

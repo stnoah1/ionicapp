@@ -26,9 +26,13 @@ def user_create_view(request):
     return Response({'token': token}, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PATCH'])
 @permission_classes((IsAuthenticated,))
 def user_detail_view(request):
     user = request.user
+    if request.method == 'PATCH':
+        for k, v in request.data.items():
+            setattr(user, k, v)
+        user.save()
     serializer = UserSerializer(user)
     return Response(serializer.data, status=status.HTTP_200_OK)
