@@ -105,9 +105,9 @@ class Friends(TimeStampedModel):
         verbose_name_plural = verbose_name
 
     user = models.ForeignKey(YouAreUser, verbose_name='사용자')
-    name = models.CharField(verbose_name='이름', max_length=30, blank=True, null=True)
     phone = models.CharField(verbose_name='전화번호', max_length=30, blank=True, null=True)
-
+    name = models.CharField(verbose_name='이름', max_length=30, blank=True, null=True)
+    # 안 쓸듯
     email = models.EmailField(verbose_name='이메일', max_length=255, blank=True, null=True)
     birthday = models.DateField(verbose_name='생년월일', blank=True, null=True)
     gender = models.CharField(verbose_name='성별', max_length=1, choices=CHOICES['성별'], default='M', blank=True,

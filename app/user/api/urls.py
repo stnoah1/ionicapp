@@ -6,5 +6,6 @@ from user.api import views
 urlpatterns = [
     url(r'^$', views.user_create_view, name='user-create'),
     url(r'^self/$', views.user_detail_view, name='user-detail'),
+    url(r'^self/friends/$', views.FriendsListView.as_view(), name='friends-list'),
     url(r'^self/praises/', include(urlpatterns_user, namespace='praise')),
 ]
