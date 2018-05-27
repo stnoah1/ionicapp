@@ -1,0 +1,23 @@
+<!--
+  Generated template for the Step1Page page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>step1</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h1>What your name?</h1>
+    <ion-item>
+        <ion-label fixed>NAME</ion-label>
+        <ion-input type="text" [(ngModel)]="user_info.name" name="name"></ion-input>
+      </ion-item>  
+  <div><button ion-button (click)="goNext()" >NEXT</button></div>
+</ion-content>
